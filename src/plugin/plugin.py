@@ -419,10 +419,10 @@ class KodiLauncher(Screen):
         def psCallback(data, retval, extraArgs):
             FBLock()
             kodiProc = None
-            procs = data.split('\n')
+            procs = data.split(b'\n')
             if len(procs) > 0:
                 for p in procs:
-                    if 'kodi.bin' in p:
+                    if b'kodi.bin' in p:
                         if kodiProc is not None:
                             print('[KodiLauncher] startup - there are more kodi processes running!')
                             return self.stop()

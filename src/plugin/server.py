@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import logging
-import SocketServer
+import socketserver
 import struct
 
 try:
@@ -12,11 +12,11 @@ print("E2KODI_DEBUG_LVL = ", loglevel)
 
 logging.basicConfig(level=loglevel, format='%(name)s: %(message)s',)
 
-class KodiExtRequestHandler(SocketServer.BaseRequestHandler):
+class KodiExtRequestHandler(socketserver.BaseRequestHandler):
 
     def __init__(self, request, client_address, server):
         self.logger = logging.getLogger('KodiExtRequestHandler')
-        SocketServer.BaseRequestHandler.__init__(self, request, client_address, server)
+        socketserver.BaseRequestHandler.__init__(self, request, client_address, server)
 
     def handle(self):
         hlen = struct.calcsize('ibi')
@@ -42,9 +42,9 @@ class KodiExtRequestHandler(SocketServer.BaseRequestHandler):
         return True, None
 
 
-class UDSServer(SocketServer.UnixStreamServer):
+class UDSServer(socketserver.UnixStreamServer):
 
     def __init__(self, server_address, handler_class=KodiExtRequestHandler):
         self.logger = logging.getLogger('UDSServer')
         self.allow_reuse_address = True
-        SocketServer.UnixStreamServer.__init__(self, server_address, handler_class)
+        socketserver.UnixStreamServer.__init__(self, server_address, handler_class)
