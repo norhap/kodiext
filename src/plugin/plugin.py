@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 from Queue import Queue
 import json
 import os
@@ -15,12 +17,12 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools import Notifications
 
-from e2utils import InfoBarAspectChange, WebPixmap, MyAudioSelection, \
+from .e2utils import InfoBarAspectChange, WebPixmap, MyAudioSelection, \
     StatusScreen, getPlayPositionInSeconds, getDurationInSeconds, \
     InfoBarSubservicesSupport
 from enigma import eServiceReference, eTimer, ePythonMessagePump, \
     iPlayableService, fbClass, eRCInput, getDesktop
-from server import KodiExtRequestHandler, UDSServer
+from .server import KodiExtRequestHandler, UDSServer
 from Tools.BoundFunction import boundFunction
 
 try:
@@ -57,32 +59,32 @@ def SaveDesktopInfo():
         try:
                 _g_dw = getDesktop(0).size().width()
                 _g_dh = getDesktop(0).size().height()
-        except: _g_dw,_g_dh = 1280,720
-        print "[XBMC] Desktop size [%dx%d]" % (_g_dw,_g_dh)
+        except: _g_dw, _g_dh = 1280, 720
+        print("[XBMC] Desktop size [%dx%d]" % (_g_dw, _g_dh))
         open("/tmp/dw.info", "w").write(str(_g_dw) + "x" + str(_g_dh))
 SaveDesktopInfo()
 
 def FBLock():
-    print"[KodiLauncher] FBLock"
+    print("[KodiLauncher] FBLock")
     fbClass.getInstance().lock()
 
 def FBUnlock():
-    print "[KodiLauncher] FBUnlock"
+    print("[KodiLauncher] FBUnlock")
     fbClass.getInstance().unlock()
 
 def RCLock():
-    print "[KodiLauncher] RCLock"
+    print("[KodiLauncher] RCLock")
     eRCInput.getInstance().lock()
 
 def RCUnlock():
-    print "[KodiLauncher] RCUnlock"
+    print("[KodiLauncher] RCUnlock")
     eRCInput.getInstance().unlock()
 
 def kodiStopped(data, retval, extraArgs):
-    print '[KodiLauncher] kodi stopped: retval = %d' % retval
+    print('[KodiLauncher] kodi stopped: retval = %d' % retval)
 
 def kodiResumeStopped(data, retval, extraArgs):
-    print '[KodiLauncher] kodi resume script stopped: retval = %d' % retval
+    print('[KodiLauncher] kodi resume script stopped: retval = %d' % retval)
     if retval > 0:
         KODI_LAUNCHER.stop()
 
@@ -158,7 +160,7 @@ class KodiVideoPlayer(InfoBarBase, SubsSupportStatus, SubsSupport, InfoBarShowHi
 
         self.eventTracker = ServiceEventTracker(self,
         {
-            iPlayableService.evStart : self.__evStart,
+            iPlayableService.evStart: self.__evStart,
         })
         self.onClose.append(boundFunction(self.session.deleteDialog, self.statusScreen))
         self.onClose.append(boundFunction(Notifications.RemovePopup, self.RESUME_POPUP_ID))
@@ -420,15 +422,15 @@ class KodiLauncher(Screen):
                 for p in procs:
                     if 'kodi.bin' in p:
                         if kodiProc is not None:
-                            print '[KodiLauncher] startup - there are more kodi processes running!'
+                            print('[KodiLauncher] startup - there are more kodi processes running!')
                             return self.stop()
                         kodiProc = p.split()
             if kodiProc is not None:
                 kodiPid = int(kodiProc[0])
-                print "[KodiLauncher] startup: kodi is running, pid = %d , resuming..."% kodiPid
+                print("[KodiLauncher] startup: kodi is running, pid = %d , resuming..."% kodiPid)
                 self.resumeKodi(kodiPid)
             else:
-                print "[KodiLauncher] startup: kodi is not running, starting..."
+                print("[KodiLauncher] startup: kodi is not running, starting...")
                 self.startKodi()
 
         self._checkConsole = Console()
@@ -449,7 +451,7 @@ class KodiLauncher(Screen):
         self.close()
 
 def autoStart(reason, **kwargs):
-    print "[KodiLauncher] autoStart - reason = %d" % reason
+    print("[KodiLauncher] autoStart - reason = %d" % reason)
     global SERVER_THREAD
     global SERVER
     if reason == 0:

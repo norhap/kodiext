@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from __future__ import print_function
 import base64
 import os
 from twisted.web.client import downloadPage
@@ -126,7 +127,7 @@ class WebPixmap(GUIComponent):
         if self.caching:
             self.currentUrl = None
         if url == self.currentUrl:
-            print '[WebPixmap] load - already loaded'
+            print('[WebPixmap] load - already loaded')
             return
         if os.path.isfile(url):
             self.loadFromFile(url)
@@ -140,7 +141,7 @@ class WebPixmap(GUIComponent):
             else:
                 self.loadFromUrl(url, tmpPath)
         else:
-            print '[WebPixmap] load - file not found or unsupported url: "%s"' % (str(url))
+            print('[WebPixmap] load - file not found or unsupported url: "%s"' % (str(url)))
 
     def setPixmapCB(self, picInfo=None):
         ptr = self.picload.getData()
@@ -266,22 +267,22 @@ class InfoBarAspectChange(object):
         return "%s: %s\n%s: %s" % (_("Aspect"), aspectStr, _("Policy"), policyStr)
 
     def setAspect(self, aspect, policy, policy2):
-        print 'aspect: %s policy: %s policy2: %s' % (str(aspect), str(policy), str(policy2))
+        print('aspect: %s policy: %s policy2: %s' % (str(aspect), str(policy), str(policy2)))
         if aspect:
             try:
                 open("/proc/stb/video/aspect", "w").write(aspect)
             except IOError as e:
-                print e
+                print(e)
         if policy:
             try:
                 open("/proc/stb/video/policy", "w").write(policy)
             except IOError as e:
-                print e
+                print(e)
         if policy2:
             try:
                 open("/proc/stb/video/policy2", "w").write(policy2)
             except IOError as e:
-                print e
+                print(e)
         for f in self.postAspectChange:
             f()
 
