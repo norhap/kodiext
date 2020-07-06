@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import print_function
-from Queue import Queue
 import json
 import os
 import threading
@@ -24,6 +23,9 @@ from enigma import eServiceReference, eTimer, ePythonMessagePump, \
     iPlayableService, fbClass, eRCInput, getDesktop
 from .server import KodiExtRequestHandler, UDSServer
 from Tools.BoundFunction import boundFunction
+
+from six.moves.queue import Queue
+
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus

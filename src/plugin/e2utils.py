@@ -13,6 +13,7 @@ from Components.Sources.StaticText import StaticText
 from Screens.AudioSelection import AudioSelection
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Screen import Screen
+import six
 
 from skin import parseColor
 from enigma import iPlayableService, ePicLoad, ePixmap, eTimer, getDesktop
@@ -21,8 +22,8 @@ from enigma import iPlayableService, ePicLoad, ePixmap, eTimer, getDesktop
 def toString(text):
     if text is None:
         return None
-    if isinstance(text, basestring):
-        if isinstance(text, unicode):
+    if isinstance(text, six.string_types):
+        if isinstance(text, six.text_type):
             return text.encode('utf-8')
         return text
     return str(text)
