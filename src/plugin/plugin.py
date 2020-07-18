@@ -23,7 +23,7 @@ from enigma import eServiceReference, eTimer, ePythonMessagePump, \
     iPlayableService, fbClass, eRCInput, getDesktop
 from .server import KodiExtRequestHandler, UDSServer
 from Tools.BoundFunction import boundFunction
-
+import six
 from six.moves.queue import Queue
 
 
@@ -338,6 +338,7 @@ class E2KodiExtServer(UDSServer):
         # parse subtitles, play path and service type from data
         sType = 4097
         subtitles = []
+        data = six.ensure_str(data)
         dataSplit = data.strip().split("\n")
         if len(dataSplit) == 1:
             playPath = dataSplit[0]
@@ -389,7 +390,7 @@ class E2KodiExtServer(UDSServer):
         title = Meta(meta).getTitle()
         if not title:
             title = os.path.basename(playPath.split("#")[0])
-        sref.setName(title.encode('utf-8'))
+        sref.setName(six.ensure_str(title))
 
         # set start position if provided
         self.kodiPlayer.setStartPosition(Meta(meta).getStartTime())

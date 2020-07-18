@@ -36,7 +36,7 @@ class KodiExtRequestHandler(socketserver.BaseRequestHandler):
         header = struct.pack('ibi', opcode, status, datalen)
         self.request.send(header)
         if datalen > 0:
-            self.request.send(data)
+            self.request.send(bytes(data))
 
     def handle_request(self, opcode, status, data):
         return True, None
